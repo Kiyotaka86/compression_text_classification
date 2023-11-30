@@ -1,6 +1,9 @@
 import numpy as np
 import pandas as pd
 import gzip
+from nltk.tokenize import word_tokenize
+import nltk
+nltk.download('punkt')
 
 # Define the function
 def compressed_classification(query, text, k):
@@ -22,18 +25,18 @@ with open('stopwords.txt', 'r') as f:
     stopwords = f.readlines()
     stopwords = [word.strip() for word in stopwords]
 
+def preprocess(text):
+    # Tokenize the text
+    tokens = word_tokenize(text.lower())
+    # Remove stopwords
+    filtered_tokens = [word for word in tokens if word not in stopwords]
+    return " ".join(filtered_tokens)
 
 with open('cranfield/cranfield.dat', 'r') as f:
     cranfield_lines = f.readlines()
     cranfield_lines = [line.strip() for line in cranfield_lines]
 
-    cleaned_cranfield_lines = []
-    for line in cranfield_lines:
-        line = line.split(" ")
-        for word in line:
-            if word in stopwords:
-                line.remove(word)
-        cleaned_cranfield_lines.append(" ".join(line))
+    cleaned_cranfield_lines = [preprocess(line) for line in cranfield_lines]
 
     idx = 1
     cranfield_lines_idx = []
@@ -54,13 +57,7 @@ with open('cranfield/cranfield-queries.txt', 'r') as f:
     cranfield_queries = f.readlines()
     cranfield_queries = [line.strip() for line in cranfield_queries]
 
-    cleaned_cranfield_queries = []
-    for line in cranfield_queries:
-        line = line.split(" ")
-        for word in line:
-            if word in stopwords:
-                line.remove(word)
-        cleaned_cranfield_queries.append(" ".join(line))
+    cleaned_cranfield_queries = [preprocess(line) for line in cranfield_queries]
 
     idx = 1
     cranfield_queries_idx = []

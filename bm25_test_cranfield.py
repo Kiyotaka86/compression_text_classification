@@ -1,11 +1,22 @@
 import numpy as np
 import pandas as pd
 from rank_bm25 import BM25Okapi
+from nltk.tokenize import word_tokenize
+import nltk
+nltk.download('punkt')
+
 
 # Load the stopwords
 with open('stopwords.txt', 'r') as f:
     stopwords = f.readlines()
     stopwords = [word.strip() for word in stopwords]
+
+def preprocess(text):
+    # Tokenize the text
+    tokens = word_tokenize(text.lower())
+    # Remove stopwords
+    filtered_tokens = [word for word in tokens if word not in stopwords]
+    return filtered_tokens
 
 
 with open('cranfield/cranfield.dat', 'r') as f:
@@ -35,13 +46,7 @@ with open('cranfield/cranfield-queries.txt', 'r') as f:
         idx += 1
 
 # Tokenize the corpus and remove the stopwords
-tokenized_corpus = []
-for doc, _ in cranfield_lines_idx:
-    doc = doc.split(" ")
-    for word in doc:
-        if word in stopwords:
-            doc.remove(word)
-    tokenized_corpus.append(doc)
+tokenized_corpus = [preprocess(line) for line, _ in cranfield_lines_idx]
 
 # Train the model
 bm25 = BM25Okapi(tokenized_corpus)
@@ -56,11 +61,7 @@ for i in range(len(cranfield_queries_idx)):
     if key not in test_result:
         test_result[key] = []
     # tokenize the query and get the top k result
-    tokenized_query = cranfield_queries_idx[i][0].split(" ")
-    # remove the stopwords
-    for word in tokenized_query:
-        if word in stopwords:
-            tokenized_query.remove(word)
+    tokenized_query = preprocess(cranfield_queries_idx[i][0])
     # append the result to the test_result
     test_result[key].append(np.argsort(bm25.get_scores(tokenized_query))[::-1][:k]) # [::-1] to sort in descending order
 
