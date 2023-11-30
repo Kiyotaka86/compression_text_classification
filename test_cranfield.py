@@ -4,17 +4,18 @@ import gzip
 
 # Define the function
 def compressed_classification(query, text, k):
-    x1, _ = query # x1 is the query
+    x1, _ = query # x1 is the query from cranfield-queries.txt
     Cx1 = len(gzip.compress(x1.encode())) 
     distance_from_x1 = []
-    for (x2,_) in text: # x2 is the text
+    for (x2,_) in text: # x2 is the text of cranfield.dat
         Cx2 = len(gzip.compress(x2.encode()))
         x1x2 = " ".join([x1, x2])
         Cx1x2 = len(gzip.compress(x1x2.encode()))
         ncd = (Cx1x2 - min(Cx1,Cx2)) / max(Cx1, Cx2) # calculate the normalized compression distance
         distance_from_x1.append(ncd)
+    # Directly return the indexes of the top k smallest distances
     return np.argsort(np.array(distance_from_x1))[:k] 
-# I found indexes of distributed cranfield-qrels.txt is already subtracted by 1 from the original cranqrel, so I don't need to add 1 to the returned index
+# I found indexes distributed cranfield-qrels.txt are already subtracted by 1 from the original cranqrel file, so I don't need to add 1 to the returned index
 
 # Load the data
 with open('cranfield/cranfield.dat', 'r') as f:
@@ -45,14 +46,15 @@ with open('cranfield/cranfield-queries.txt', 'r') as f:
         idx += 1
 
 # Declare K
-k = 10
+k = 20
 
-# Execute the test
+# Execute the test and store the result
 test_result = {}
 for i in range(len(cranfield_queries_idx)):
     key = i+1
     if key not in test_result:
         test_result[key] = []
+    # passing each query to the classification function with the whole text and k
     test_result[key].append(compressed_classification(cranfield_queries_idx[i], cranfield_lines_idx, k))
 
 # Score the result by matching the result with the qrels
@@ -60,10 +62,8 @@ scored_result = {}
 for key in test_result:
     if key not in scored_result:
         scored_result[key] = []
-    if key == 1:
-        print(len(test_result[key][0]))
-
-    for i in range(len(test_result[key][0])): # test_result[key][0] is the list of indexes of compressed_classification result
+    # test_result[key][0] is the list of indexes of compressed_classification result
+    for i in range(len(test_result[key][0])): 
         for j in range(len(cranfield_qrels[key])):
             if test_result[key][0][i] == cranfield_qrels[key][j][0]:
                 scored_result[key].append((i+1, cranfield_qrels[key][j][1]))
