@@ -1,21 +1,6 @@
 import numpy as np
 import pandas as pd
-import gzip
-
-# Define the function
-def compressed_classification(query, text, k):
-    x1, _ = query # x1 is the query from cranfield-queries.txt
-    Cx1 = len(gzip.compress(x1.encode())) 
-    distance_from_x1 = []
-    for (x2,_) in text: # x2 is the text of cranfield.dat
-        Cx2 = len(gzip.compress(x2.encode()))
-        x1x2 = " ".join([x1, x2])
-        Cx1x2 = len(gzip.compress(x1x2.encode()))
-        ncd = (Cx1x2 - min(Cx1,Cx2)) / max(Cx1, Cx2) # calculate the normalized compression distance
-        distance_from_x1.append(ncd)
-    # Directly return the indexes of the top k smallest distances
-    return np.argsort(np.array(distance_from_x1))[:k] 
-# I found indexes distributed cranfield-qrels.txt are already subtracted by 1 from the original cranqrel file, so I don't need to add 1 to the returned index
+from rank_bm25 import BM25Okapi
 
 # Load the stopwords
 with open('stopwords.txt', 'r') as f:
@@ -26,8 +11,6 @@ with open('stopwords.txt', 'r') as f:
 with open('cranfield/cranfield.dat', 'r') as f:
     cranfield_lines = f.readlines()
     cranfield_lines = [line.strip() for line in cranfield_lines]
-    for stopword in stopwords:
-        cranfield_lines = [line.replace(stopword, '') for line in cranfield_lines]
     idx = 1
     cranfield_lines_idx = []
     for line in cranfield_lines:
@@ -45,13 +28,23 @@ with open('cranfield/cranfield-qrels.txt', 'r') as f:
 
 with open('cranfield/cranfield-queries.txt', 'r') as f:
     cranfield_queries = f.readlines()
-    for stopword in stopwords:
-        cranfield_queries = [line.replace(stopword, '') for line in cranfield_queries]
     idx = 1
     cranfield_queries_idx = []
     for line in cranfield_queries:
         cranfield_queries_idx.append((line,idx))
         idx += 1
+
+# Tokenize the corpus and remove the stopwords
+tokenized_corpus = []
+for doc, _ in cranfield_lines_idx:
+    doc = doc.split(" ")
+    for word in doc:
+        if word in stopwords:
+            doc.remove(word)
+    tokenized_corpus.append(doc)
+
+# Train the model
+bm25 = BM25Okapi(tokenized_corpus)
 
 # Declare K
 k = 20
@@ -62,8 +55,14 @@ for i in range(len(cranfield_queries_idx)):
     key = i+1
     if key not in test_result:
         test_result[key] = []
-    # passing each query to the classification function with the whole text and k
-    test_result[key].append(compressed_classification(cranfield_queries_idx[i], cranfield_lines_idx, k))
+    # tokenize the query and get the top k result
+    tokenized_query = cranfield_queries_idx[i][0].split(" ")
+    # remove the stopwords
+    for word in tokenized_query:
+        if word in stopwords:
+            tokenized_query.remove(word)
+    # append the result to the test_result
+    test_result[key].append(np.argsort(bm25.get_scores(tokenized_query))[::-1][:k]) # [::-1] to sort in descending order
 
 # Score the result by matching the result with the qrels
 scored_result = {}
