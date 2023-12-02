@@ -3,12 +3,12 @@
 
 ## Intro
 
-## Part I: Text Retrieval
+## Part 1: Text Retrieval
 ### Cranfield Dataset
 
 ### NCD Measure for Query-Document Text Retrieval
 
-## Part II: Text Classification
+## Part 2: Text Classification
 
 ## Conclusion
 
