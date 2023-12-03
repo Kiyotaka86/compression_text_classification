@@ -46,7 +46,7 @@ with open('cranfield/cranfield-queries.txt', 'r') as f:
         idx += 1
 
 # Declare K
-k = 20
+k = 10
 
 # Execute the test and store the result
 test_result = {}

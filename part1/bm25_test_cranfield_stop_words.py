@@ -52,7 +52,7 @@ tokenized_corpus = [preprocess(line) for line, _ in cranfield_lines_idx]
 bm25 = BM25Okapi(tokenized_corpus)
 
 # Declare K
-k = 20
+k = 10
 
 # Execute the test and store the result
 test_result = {}
