@@ -1,7 +1,7 @@
 import numpy as np
 import gzip
 
-
+# The function from the article
 def compressed_classification(training_set, test_set, k):
     for (x1, _) in test_set:
         Cx1 = len(gzip.compress(x1.encode())) 

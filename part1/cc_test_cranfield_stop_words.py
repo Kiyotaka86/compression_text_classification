@@ -5,7 +5,7 @@ from nltk.tokenize import word_tokenize
 import nltk
 nltk.download('punkt')
 
-# Define the function
+# Define the function to calculate the NCD and return the indexes of the top k smallest distances
 def compressed_classification(query, text, k):
     x1, _ = query # x1 is the query from cranfield-queries.txt
     Cx1 = len(gzip.compress(x1.encode())) 
