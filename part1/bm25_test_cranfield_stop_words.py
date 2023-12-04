@@ -102,3 +102,4 @@ for key in scored_result:
 
 # Print the average NDCG
 print(np.mean(np.array(ndcg_result)))
+# nDCG@10 = 0.33175857046800683
