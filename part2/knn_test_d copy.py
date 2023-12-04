@@ -21,6 +21,14 @@ def pass_data():
                 pass
     
     df = pd.DataFrame(data)
+
+    # reduce the sample size due to heavy computation
+    sample_size = 20000
+    # Sample the dataframe if it is larger than the sample size
+    if len(df) > sample_size:
+        df = df.sample(n=sample_size, random_state=42)
+
+
     df['text'] = df['headline'] + ' ' + df['short_description']
     df['label'] = df['category']
 
