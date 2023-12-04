@@ -1,31 +1,24 @@
 import numpy as np
+import pandas as pd
+import re, string, demoji
 from sklearn.metrics import classification_report
 from sklearn.preprocessing import LabelEncoder
-import pandas as pd
 from sklearn.model_selection import train_test_split
-import json
 from npc_gzip.compressors.base import BaseCompressor
 from npc_gzip.compressors.gzip_compressor import GZipCompressor
 from npc_gzip.knn_classifier import KnnClassifier
 
 def pass_data():
 
-    data = []
+    df = pd.read_csv('train_40k.csv', encoding='latin-1')
 
-    with open('News_Category_Dataset_v3.json') as file:
-        for line in file:
-            try:
-                data.append(json.loads(line))
-            except:
-                pass
-    
-    df = pd.DataFrame(data)
-    df['text'] = df['headline'] + ' ' + df['short_description']
-    df['label'] = df['category']
+    df['text'] = df['Text']
+    df['label'] = df['Cat1']
 
     return df
 
 def get_data(test_size=0.2):
+
     df = pass_data()
 
     # Splitting the dataset
@@ -79,10 +72,6 @@ def main() -> None:
     model = fit_model(train_text, train_labels)
 
     # Randomly sampling from the test set.
-    # The IMDb test data comes in with all of the
-    # `1` labels first, then all of the `2` labels
-    # last, so we're shuffling so that our model
-    # has something to predict other than `1`.
 
     random_indicies = np.random.choice(test_text.shape[0], 1000, replace=False)
 
@@ -98,7 +87,7 @@ def main() -> None:
     # data to compare `sample_test_text` against rather
     # than comparing it against the entire training dataset.
     (distances, labels, similar_samples) = model.predict(
-        sample_test_text, top_k, sampling_percentage=0.01
+        sample_test_text, top_k, sampling_percentage=0.1
     )
 
     print(classification_report(sample_test_labels, labels.reshape(-1)))
@@ -106,3 +95,8 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+# Output:
+#     accuracy                           0.35      1000
+#    macro avg       0.32      0.32      0.32      1000
+# weighted avg       0.34      0.35      0.35      1000

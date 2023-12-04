@@ -1,39 +1,30 @@
 import numpy as np
+import pandas as pd
+import json
 from sklearn.metrics import classification_report
 from sklearn.preprocessing import LabelEncoder
-import pandas as pd
 from sklearn.model_selection import train_test_split
-import json
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.preprocessing import LabelEncoder
-from sklearn.metrics import classification_report
 
+# To pass the data from JSON file to dataframe
 def pass_data():
 
-    data = []
-
-    with open('News_Category_Dataset_v3.json') as file:
-        for line in file:
-            try:
-                data.append(json.loads(line))
-            except:
-                pass
-    
-    df = pd.DataFrame(data)
+    df = pd.read_csv('train_40k.csv', encoding='latin-1')
 
     # reduce the sample size due to heavy computation
-    sample_size = 20000
-    # Sample the dataframe if it is larger than the sample size
-    if len(df) > sample_size:
-        df = df.sample(n=sample_size, random_state=42)
+    # sample_size = 20000
+    # # Sample the dataframe if it is larger than the sample size
+    # if len(df) > sample_size:
+    #     df = df.sample(n=sample_size, random_state=42)
 
 
-    df['text'] = df['headline'] + ' ' + df['short_description']
-    df['label'] = df['category']
+    df['text'] = df['Text']
+    df['label'] = df['Cat1']
 
     return df
 
+# To split the data into train and test
 def get_data(test_size=0.2):
     df = pass_data()
 
@@ -53,7 +44,8 @@ def get_data(test_size=0.2):
 
     return (train, test)
 
-# Assuming you have a function to load and split your data
+
+# extract the train test data
 (train_text, train_labels), (test_text, test_labels) = get_data()
 
 # Text Vectorization
@@ -61,7 +53,7 @@ vectorizer = TfidfVectorizer()
 X_train = vectorizer.fit_transform(train_text)
 X_test = vectorizer.transform(test_text)
 
-# Convert labels to integers if they are categorical
+# Convert labels to integers
 label_encoder = LabelEncoder()
 train_labels_encoded = label_encoder.fit_transform(train_labels)
 test_labels_encoded = label_encoder.transform(test_labels)
@@ -74,3 +66,8 @@ standard_knn_model.fit(X_train, train_labels_encoded)
 standard_predictions = standard_knn_model.predict(X_test)
 print("Standard KNN Model Performance:")
 print(classification_report(test_labels_encoded, standard_predictions))
+
+# Output:
+#     accuracy                           0.75      8000
+#    macro avg       0.74      0.76      0.74      8000
+# weighted avg       0.76      0.75      0.75      8000
