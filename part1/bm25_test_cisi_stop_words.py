@@ -86,7 +86,7 @@ tokenized_corpus = [preprocess(line) for line in documents.values()]
 bm25 = BM25Okapi(tokenized_corpus)
 
 # Declare K
-k = 3
+k = 10
 
 # Execute the test and store the result
 test_result = {}

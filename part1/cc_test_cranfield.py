@@ -3,7 +3,7 @@ import pandas as pd
 import gzip
 
 # Define the function to calculate the NCD and return the indexes of the top k smallest distances
-def compressed_classification(query, text, k):
+def compressed_search(query, text, k):
     x1, _ = query # x1 is the query from cranfield-queries.txt
     Cx1 = len(gzip.compress(x1.encode())) 
     distance_from_x1 = []
@@ -54,15 +54,15 @@ for i in range(len(cranfield_queries_idx)):
     key = i+1
     if key not in test_result:
         test_result[key] = []
-    # passing each query to the classification function with the whole text and k
-    test_result[key].append(compressed_classification(cranfield_queries_idx[i], cranfield_lines_idx, k))
+    # passing each query to the search function with the whole text and k
+    test_result[key].append(compressed_search(cranfield_queries_idx[i], cranfield_lines_idx, k))
 
 # Score the result by matching the result with the qrels
 scored_result = {}
 for key in test_result:
     if key not in scored_result:
         scored_result[key] = []
-    # test_result[key][0] is the list of indexes of compressed_classification result
+    # test_result[key][0] is the list of indexes of compressed_search result
     for i in range(len(test_result[key][0])): 
         for j in range(len(cranfield_qrels[key])):
             if test_result[key][0][i] == cranfield_qrels[key][j][0]:

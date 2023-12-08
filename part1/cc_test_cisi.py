@@ -3,11 +3,11 @@ import pandas as pd
 import gzip
 
 # Define the function to calculate the NCD and return the indexes of the top k smallest distances
-def compressed_classification(query, text, k):
+def compressed_search(query, text, k):
     x1 = query 
     Cx1 = len(gzip.compress(x1.encode())) 
     distance_from_x1 = []
-    for (x2) in text.values(): # 
+    for x2 in text.values(): # 
         Cx2 = len(gzip.compress(x2.encode()))
         x1x2 = " ".join([x1, x2])
         Cx1x2 = len(gzip.compress(x1x2.encode()))
@@ -84,8 +84,8 @@ test_result = {}
 for key in qry_set.keys():
     if key not in test_result:
         test_result[key] = []
-    # passing each query to the classification function with the whole text and k
-    test_result[key].append(compressed_classification(qry_set[key], documents, k))
+    # passing each query to the search function with the whole text and k
+    test_result[key].append(compressed_search(qry_set[key], documents, k))
 
 # Score the result by matching the result with the qrels
 scored_result = {}
