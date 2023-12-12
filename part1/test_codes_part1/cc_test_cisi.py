@@ -115,13 +115,13 @@ print(np.mean(np.array(map_result)))
 # Calculate the MRR
 mrr_result = []
 for key in scored_result.keys():
-    temp = 0
     for i in range(len(scored_result[key])):
         if scored_result[key][i][1] == 1:
-            temp = 1/(i+1)
-    mrr_result.append(temp)
-
+            mrr_result.append(1/(i+1))
+            break
+        if i == len(scored_result[key])-1:
+            mrr_result.append(0)
 print(np.mean(np.array(mrr_result)))
 
 # MAP = 0.07763157894736843
-# MRR = 0.13420530492898913
+# MRR = 0.21715225563909776
