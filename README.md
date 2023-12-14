@@ -22,7 +22,7 @@ This analysis uses two benchmark datasets for text retrieval: Cranfield and CISI
 - CISI: Another established dataset with a different characteristic, offering a broader perspective on NCD's retrieval capabilities.
 
 ### Outcome and Challenges
-According the result from [part1 notebook] (part1/part1.ipynb) and [test codes](part1/test_codes_part1), the performance from NCD method in text retrieval is far below from BM25 results in both datasets. This may be due to the different amount of information between queries and texts. As the paper suggests, the compression method is for similarity calculation among texts with similar characteristics. Existing text retrieval methods: TF, IDF, Vectorization, and etc are still the prior methods to find corresponding texts from much shorter queries.
+According the result from [part1 notebook](part1/part1.ipynb) and [test codes](part1/test_codes_part1), the performance from NCD method in text retrieval is far below from BM25 results in both datasets. This may be due to the different amount of information between queries and texts. As the paper suggests, the compression method is for similarity calculation among texts with similar characteristics. Existing text retrieval methods: TF, IDF, Vectorization, and etc are still the prior methods to find corresponding texts from much shorter queries.
 Compression method could be used in TR field in the future. For example, this method could be used as dimensionality reduction and merged into existing TR methods.
 
 ## Part 2: Text Classification
@@ -34,7 +34,7 @@ The original paper proposes a significantly better results compared to cutting e
  I am going to see how if the NCD method and its library works well by a newbie to Text classification field like myself. Using dataset with similar characteristics with the original paper, this section examines how the library and method is useful comparing to existing traditional classification methods.
 
 ### Dataset
-I used [Hierarchical text classification] (https://www.kaggle.com/datasets/kashnitsky/hierarchical-text-classification) dataset available on Kaggle. which has similar characteristics in terms of length and number of words and labels compared to AGNews dataset which is used in the original NCD paper and lead the stunning result. For the simplification, I only used Cat1 (level1) column as the label.
+I used [Hierarchical text classification](https://www.kaggle.com/datasets/kashnitsky/hierarchical-text-classification) dataset available on Kaggle. which has similar characteristics in terms of length and number of words and labels compared to AGNews dataset which is used in the original NCD paper and lead the stunning result. For the simplification, I only used Cat1 (level1) column as the label.
 In this benchmark, I used 5k of 40k total rows due to computational resources, and it is split into 80% of train set and 20% of test set.
 
 ### npc-gzip library
@@ -64,7 +64,7 @@ Not only future work will focus on scaling NCD to larger datasets, exploring alt
 
 ## Conclusion
 While compression method is not directly applicable to text retrieval with current form, this could be used in different ways like PCA. Since queries and documents contain significantly different amounts of information, traditional retrieval methods still alters. Where compression method is useful may not be direct information retrieval field, but the compression similarity measure can be leveraged in somewhere middle of retrieval processes because the amount of data that our world generates has been increasing exponentially.
-Even though there are challenges remain in terms of NCD's performance and computational demands, this method's future in text classification looks promising. The compression-classfication process should be optimized for threading or other parallel computation methods. There should be continuous research and development to unlock its potential. By contributing to npc-gzip library and exploring innovative applications, we may be able to find the way for a future where NCD's efficient compression empowers text classification tasks across diverse domains. 
+Even though there are challenges remain in terms of NCD's performance and computational demands, this method's future in text classification looks promising. The compression-classification process should be optimized for threading or other parallel computation methods. There should be continuous research and development to unlock its potential. By contributing to npc-gzip library and exploring innovative applications, we may be able to find the way for a future where NCD's efficient compression empowers text classification tasks across diverse domains. 
 
 ## Contributor
 - K Kokubun(UID: kokubun3)
