@@ -1,4 +1,5 @@
 # Quick introduction of text retrieval and classification by compression distance method
+Please refer to [Presentation Video]() for presentation of the project.
 ## Overview and Intro
 This repository contains a brief overview of text retrieval and classification using the "Normalized Compression Distance" (NCD) method introduced by [“Low-Resource” Text Classification: A Parameter-Free Classification Method with Compressors](https://aclanthology.org/2023.findings-acl.426/). The authors created a new text classification method and library of [npc_gzip](https://github.com/bazingagin/npc_gzip) based on the compression distance measure introduced by ["The Similarity Metric"](https://www.researchgate.net/publication/220679130_The_Similarity_Metric). They add normalize feature for the compression distance method, and implemented it into K-Nearest Neighbors classification function. The authors claim that the NCD method offers a competitive alternative to existing classification methods by achieving comparable accuracy with less computational overhead.
 The NCD measure does not require feature engineering and hyperparameter tuning, and it also does not need massive GPU power since it is run by gzip compressing and simple sorting algorithm.
@@ -73,5 +74,5 @@ Even though there are challenges remain in terms of NCD's performance and comput
 - [“Low-Resource” Text Classification: A Parameter-Free Classification Method with Compressors](https://aclanthology.org/2023.findings-acl.426/)
 - [npc_gzip](https://github.com/bazingagin/npc_gzip)
 - [Cranfield collection](http://ir.dcs.gla.ac.uk/resources/test_collections/cran/)
-- [CISI Dataset] (https://www.kaggle.com/datasets/dmaso01dsta/cisi-a-dataset-for-information-retrieval)
-- [Hierarchical text classification] (https://www.kaggle.com/datasets/kashnitsky/hierarchical-text-classification)
+- [CISI Dataset](https://www.kaggle.com/datasets/dmaso01dsta/cisi-a-dataset-for-information-retrieval)
+- [Hierarchical text classification](https://www.kaggle.com/datasets/kashnitsky/hierarchical-text-classification)
