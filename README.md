@@ -26,20 +26,31 @@ Compression method could be used in TR field in the future. For example, this me
 
 ## Part 2: Text Classification
 Please refer to [Part2 Notebook: part2.ipynb](part2/part2.ipynb)
+
+### Measure NCD's Text Classification Potential
+This section explores the effectiveness of NCD-based text classification compared to established methods like KNN, SVM, and BERT. 
+The original paper proposes a significantly better results compared to cutting edge DL techniques.
+ I am going to see how if the NCD method and its library works well by a newbie to Text classification field like myself. Using dataset with similar characteristics with the original paper, this section examines how the library and method is useful comparing to existing traditional classification methods.
+
 ### Dataset
-I used [Hierarchical text classification] (https://www.kaggle.com/datasets/kashnitsky/hierarchical-text-classification) dataset available on Kaggle. which has similar characteristics in terms of length and number of words and labels compared to AGNews dataset which is used in the original NCD paper. For the simplification, I only used Cat1 (level1) column as the label.
-In this benchmark, I only used 5k 
+I used [Hierarchical text classification] (https://www.kaggle.com/datasets/kashnitsky/hierarchical-text-classification) dataset available on Kaggle. which has similar characteristics in terms of length and number of words and labels compared to AGNews dataset which is used in the original NCD paper and lead the stunning result. For the simplification, I only used Cat1 (level1) column as the label.
+In this benchmark, I used 5k of 40k total rows due to computational resources, and it is split into 80% of train set and 20% of test set.
 
 ### npc-gzip library
 The authors of the NCD paper created the library for text classification purpose.
 [npc_gzip](https://github.com/bazingagin/npc_gzip)
 We can install the library from `pip install npc-gzip`
 
+I used the library and some part of example codes in the repository.
+It provides KNN classification class with four compatible distance measure methods including NCD. I would not modify compression algorithm itself and leave default gzip.
+Leveraging the npc-gzip library developed by the NCD paper authors, I implement KNN with four diverse distance measures and top k values ranging from 1 to 20. The benchmark selects the top accuracy achieved among these combinations, providing a comprehensive evaluation.
+
 ### Comparison with Existing Methods
 The performance of NCD-based text classification is compared against established methods like K-Nearest Neighbors (KNN), Support Vector Machines (SVM), and pre-trained BERT (from MP3.2). This comparison aims to evaluate NCD's effectiveness and identify its strengths and weaknesses compared to existing approaches.
 
 ### Outcome and Challenges
-I used 5k of 40k 
+Below is the table of accuracy of each method.
+
 | Model       | Accuracy |
 |-------------|----------|
 | Compression | 0.504    |
@@ -47,9 +58,12 @@ I used 5k of 40k
 | Default SVM | 0.794    |
 | BERT        | 0.834    |
 
-
+While BERT achieves the highest accuracy, NCD demonstrates promising potential, especially considering that it does not have train phase and parameter tuning. Note that the NCD and its library is considerably new, meanwhile other methods have been polished by millions of developers and data scientists through the last decade. Also, accuracy cannot be the absolute measure of text classification; I just used this measure for simplicity.
+Not only future work will focus on scaling NCD to larger datasets, exploring alternative compression techniques, and incorporating domain-specific knowledge for further performance improvements, but also we might want to contribute the library for further optimization. Executing KNN with compression methods took significantly long time compared to other methods even though it does not take train phase much, and there might be a lot of rooms to improve this method.
 
 ## Conclusion
+While compression method is not directly applicable to text retrieval with current form, this could be used in different ways like PCA. Since queries and documents contain significantly different amounts of information, traditional retrieval methods still alters. Where compression method is useful may not be direct information retrieval field, but the compression similarity measure can be leveraged in somewhere middle of retrieval processes because the amount of data that our world generates has been increasing exponentially.
+Even though there are challenges remain in terms of NCD's performance and computational demands, this method's future in text classification looks promising. The compression-classfication process should be optimized for threading or other parallel computation methods. There should be continuous research and development to unlock its potential. By contributing to npc-gzip library and exploring innovative applications, we may be able to find the way for a future where NCD's efficient compression empowers text classification tasks across diverse domains. 
 
 ## Contributor
 - K Kokubun(UID: kokubun3)
