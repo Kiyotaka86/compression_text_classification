@@ -57,7 +57,7 @@ Below is the table of accuracy of each method.
 | Compression | 0.504    |
 | Default KNN | 0.728    |
 | Default SVM | 0.794    |
-| BERT        | 0.834    |
+| [BERT](part2/part2_bert.ipynb)        | 0.834    |
 
 While BERT achieves the highest accuracy, NCD demonstrates promising potential, especially considering that it does not have train phase and parameter tuning. Note that the NCD and its library is considerably new, meanwhile other methods have been polished by millions of developers and data scientists through the last decade. Also, accuracy cannot be the absolute measure of text classification; I just used this measure for simplicity.
 Not only future work will focus on scaling NCD to larger datasets, exploring alternative compression techniques, and incorporating domain-specific knowledge for further performance improvements, but also we might want to contribute the library for further optimization. Executing KNN with compression methods took significantly long time compared to other methods even though it does not take train phase much, and there might be a lot of rooms to improve this method.
