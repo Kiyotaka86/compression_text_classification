@@ -1,4 +1,4 @@
-# Quick introduction of text retrieval and classification by compression distance method
+# Quick introduction of text retrieval and classification by Normalized Compression Distance method
 Please refer to [Presentation Video]() for presentation of the project.
 ## Overview and Intro
 This repository contains a brief overview of text retrieval and classification using the "Normalized Compression Distance" (NCD) method introduced by [“Low-Resource” Text Classification: A Parameter-Free Classification Method with Compressors](https://aclanthology.org/2023.findings-acl.426/). The authors created a new text classification method and library of [npc_gzip](https://github.com/bazingagin/npc_gzip) based on the compression distance measure introduced by ["The Similarity Metric"](https://www.researchgate.net/publication/220679130_The_Similarity_Metric). They add normalize feature for the compression distance method, and implemented it into K-Nearest Neighbors classification function. The authors claim that the NCD method offers a competitive alternative to existing classification methods by achieving comparable accuracy with less computational overhead.
